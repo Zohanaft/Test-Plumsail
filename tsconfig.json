@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es5",
+    "module": "commonjs",
+    "jsx": "react",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"],
+      "@components/*": ["src/pages/*"],
+      "@middleware/*": ["src/middleware/*"],
+      "@tests/*": ["src/tests/*"]
+    }
+  },
+  "include": ["src", "./src/declaration.d.ts"],
+  "exclude": ["node_modules", ".cache", "dist"]
+}
