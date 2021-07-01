@@ -1,11 +1,22 @@
 import React from 'react';
 
-const App: React.FC = () => {
-  return (
-    <h1>
-      Hello, world! <br /> Another string!{' weeee '}
-    </h1>
-  );
-};
+import { HeaderNavbar } from '@components/HeaderNavbar';
+import { Footer } from '@components/Footer';
 
-export default App;
+import { HomePage } from '@pages/HomePage';
+
+import * as styles from 'src/assets/scss/main.scss';
+
+export const App: React.FC = () => (
+  <>
+    <header>
+      <HeaderNavbar />
+    </header>
+    <div className={styles.default.main}>
+      <div className="container">
+        <HomePage />
+      </div>
+    </div>
+    <Footer />
+  </>
+);

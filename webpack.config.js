@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const dotenv = require('dotenv');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 Object.assign(process.env, dotenv.config({ path: '.env' }).parsed);
 
@@ -17,7 +18,7 @@ module.exports = {
   },
   target: 'web',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', ".css", ".scss"],
     plugins: [new TsconfigPathsPlugin({})]
   },
   module: {
@@ -35,6 +36,32 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: '/node_modules/'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: "style-loader" },
+          {
+            loader: "css-modules-typescript-loader",
+            options: {
+              mode: process.env.CI ? 'verify' : 'emit'
+            }
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true
+            }
+          },
+          { loader: "sass-loader" },
+        ]
       }
     ],
   },
@@ -42,6 +69,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html'),
     }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'server',
+      generateStatsFile: true,
+      statsOptions: { source: false }
+    })
   ],
   output: {
     filename: '[name].js',

@@ -1,0 +1,22 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  // is a root component
+  & > div {
+    padding: 0px;
+    margin: 0px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+header,
+footer {
+  flex: 0 0 auto;
+}

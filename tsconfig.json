@@ -11,7 +11,7 @@
     "paths": {
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
-      "@components/*": ["src/pages/*"],
+      "@components/*": ["src/components/*"],
       "@middleware/*": ["src/middleware/*"],
       "@tests/*": ["src/tests/*"]
     }
