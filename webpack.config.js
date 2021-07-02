@@ -10,7 +10,8 @@ Object.assign(process.env, dotenv.config({ path: '.env' }).parsed);
 module.exports = {
   mode: 'none',
   entry: {
-    app: path.join(__dirname, 'src', 'index.tsx')
+    app: path.join(__dirname, 'src', 'index.tsx'),
+    widget: path.join(__dirname, 'src', 'widget.tsx')
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
