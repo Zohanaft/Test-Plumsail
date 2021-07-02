@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const dotenv = require('dotenv');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const webpack = require('webpack');
 
 Object.assign(process.env, dotenv.config({ path: '.env' }).parsed);
 
@@ -74,6 +75,14 @@ module.exports = {
       analyzerMode: 'server',
       generateStatsFile: true,
       statsOptions: { source: false }
+    }),
+    new webpack.DefinePlugin({
+      // можно через cross-env выбирать среду под сборку
+      // e.g. .production.env || .development.env
+      // в последствии при деплое - полезная вещь
+      process: {
+        env: JSON.stringify(dotenv.config({ path: '.env' }).parsed)
+      }
     })
   ],
   output: {

@@ -11,6 +11,7 @@ module.exports = {
   ],
   root: true,
   env: {
+    node: true,
     jest: true,
   },
   ignorePatterns: ['.eslintrc.js', 'webpack.config.js', 'src/assets/scss/*'],
