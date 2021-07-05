@@ -15,21 +15,32 @@
 }
 
 .flex-row {
+  display: flex !important;
   flex-direction: row;
 }
 
 .flex-column {
+  display: flex !important;
   flex-direction: column;
 }
 
 .justify-center {
+  display: flex !important;
   justify-content: center;
 }
 
 .align-center {
+  display: flex !important;
   align-items: center;
 }
 
 .align-baseline {
+  display: flex !important;
   align-items: baseline;
+}
+
+.space-evenly {
+  display: flex !important;
+  width: 100%;
+  justify-content: space-evenly;
 }

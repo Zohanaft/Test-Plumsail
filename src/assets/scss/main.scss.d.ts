@@ -10,6 +10,7 @@ interface CssExports {
   'justify-center': string;
   'main': string;
   'relative': string;
+  'space-evenly': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
