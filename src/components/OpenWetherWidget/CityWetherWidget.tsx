@@ -2,7 +2,12 @@ import React from 'react';
 import MaterialIcon from 'material-icons-react';
 import { ApiOpenWether } from './ApiOpenWether';
 import { City, CityWether, WetherObject } from './City';
-import { degToCompass, getImageUrlByCode, kelvinToCelsiy } from './Utils';
+import {
+  degToCompass,
+  getDewPoint,
+  getImageUrlByCode,
+  kelvinToCelsiy,
+} from './Utils';
 
 import * as styles from 'src/assets/scss/widget.scss';
 import * as mainStyles from 'src/assets/scss/main.scss';
@@ -50,20 +55,21 @@ export const CityWetherWidget: React.FC<{
         }
         {kelvinToCelsiy(currentWetherObject.main.temp) + ' C°'}
       </div>
-      <div>
+      <div
+        className={[styles.default.row, styles.default['pl-10']]
+          .toString()
+          .replace(/,/gm, ' ')}
+      >
         Feels like{' '}
         {kelvinToCelsiy(currentWetherObject.main.feels_like) + ' C° '}
         {currentWetherObject.weather[0].description.trimStart()}
       </div>
-      <div
-        className={[
-          mainStyles.default['flex-row'],
-          mainStyles.default['space-evenly'],
-        ]
-          .toString()
-          .replace(/,/gm, ' ')}
-      >
-        <div className={mainStyles.default.relative}>
+      <div className={[styles.default.row].toString().replace(/,/gm, ' ')}>
+        <div
+          className={[styles.default['col-6'], styles.default['pl-10']]
+            .toString()
+            .replace(/,/gm, ' ')}
+        >
           <div
             style={{
               position: 'absolute',
@@ -85,30 +91,65 @@ export const CityWetherWidget: React.FC<{
               transformOrigin: 'center',
               transform: `rotate(-45deg)`,
             }}
+            className={[
+              styles.default['col-6'],
+              styles.default['pl-10'],
+              mainStyles.default['align-center'],
+            ]
+              .toString()
+              .replace(/,/gm, ' ')}
           >
             <MaterialIcon icon="remove_circle_outline" size="small" />
           </div>
-          <div style={{ paddingLeft: '30px' }}>
+          <div style={{ paddingLeft: '40px' }}>
             {currentWetherObject.main.pressure} hPa
           </div>
         </div>
       </div>
+
+      <div className={styles.default.row}>
+        <div
+          className={[
+            styles.default['col-6'],
+            styles.default['pl-10'],
+            mainStyles.default['align-center'],
+          ]
+            .toString()
+            .replace(/,/gm, ' ')}
+        >
+          <MaterialIcon icon="opacity" size="small"></MaterialIcon>
+          Humidity: {currentWetherObject.main.humidity}
+        </div>
+        <div
+          className={[
+            styles.default['col-6'],
+            styles.default['pl-10'],
+            mainStyles.default['align-center'],
+          ]
+            .toString()
+            .replace(/,/gm, ' ')}
+        >
+          <MaterialIcon icon="water_drop" size="small"></MaterialIcon>
+          Dew point:{' '}
+          {getDewPoint(
+            currentWetherObject.main.temp,
+            currentWetherObject.main.humidity,
+          )}{' '}
+          C°
+        </div>
+      </div>
+
       <div
         className={[
-          mainStyles.default['flex-row'],
-          mainStyles.default['space-evenly'],
+          styles.default.row,
+          styles.default['pl-10'],
+          mainStyles.default['align-center'],
         ]
           .toString()
           .replace(/,/gm, ' ')}
       >
-        <div>
-          <MaterialIcon icon="opacity" size="small"></MaterialIcon>
-          Humidity: {currentWetherObject.main.humidity}
-        </div>
-        <div>
-          <MaterialIcon icon="water_drop" size="small"></MaterialIcon>
-          Dew point: {}
-        </div>
+        <MaterialIcon icon="visibility" size="small"></MaterialIcon>
+        Visibility: {Math.ceil(currentWetherObject.visibility / 100) / 10}km
       </div>
     </div>
   );

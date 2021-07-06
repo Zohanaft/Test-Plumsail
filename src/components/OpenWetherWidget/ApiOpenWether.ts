@@ -1,14 +1,11 @@
 import { City, CityWether } from './City';
 import { DefaultCity } from './CurrentLocation';
-import { Callback } from './Utils';
 
 export class ApiOpenWether {
   private url: string;
   private cities: Array<City> = [];
   private citiesWether: Array<CityWether> = [];
   private apiKey: string;
-  private timeZoneOffset: number = new Date().getTimezoneOffset();
-  private dateNow: Date = new Date();
 
   constructor() {
     this.url = 'https://api.openweathermap.org/data/2.5/forecast';
@@ -38,11 +35,30 @@ export class ApiOpenWether {
     return cityIndex;
   }
 
-  public appendCity(city: City, callback: Callback<City> = undefined) {
+  public appendCity(city: City) {
     const indexOfCity = this.indexOfCity(city);
     if (!!(indexOfCity + 1)) return this.cities.splice(indexOfCity, 1, city);
-    else this.cities.push(city);
-    callback(city);
+    else {
+      this.cities.push(city);
+      this.updateStorage();
+    }
+  }
+
+  public removeCity(city: City) {
+    const indexOfCity = this.indexOfCity(city);
+    this.cities.splice(indexOfCity, 1);
+    this.removeCityWether(city);
+  }
+
+  public updateStorage() {
+    localStorage.setItem('cities', JSON.stringify(this.cities));
+  }
+
+  public removeCityWether(city: City) {
+    const indexOfCityWether = this.citiesWether.findIndex(
+      (cityWether) => cityWether.city.name === city.name,
+    );
+    if (indexOfCityWether) this.citiesWether.splice(indexOfCityWether, 1);
   }
 
   async loadFirstly(): Promise<Array<City>> {
@@ -51,7 +67,7 @@ export class ApiOpenWether {
     return this.cities;
   }
 
-  async loadCityWether(city: City): Promise<CityWether> {
+  public async loadCityWether(city: City): Promise<CityWether> {
     const params = {
       q: city.name,
       appid: this.apiKey,
@@ -63,19 +79,20 @@ export class ApiOpenWether {
 
     const response: Response = await fetch(url as string);
     const cityWether: CityWether = await response.json();
+    this.appendCity(cityWether.city);
 
     if (response.ok) return cityWether;
 
     throw new Error('Failed to load wether');
   }
 
-  getCityWether(city: City): CityWether | undefined {
+  public getCityWether(city: City): CityWether | undefined {
     return this.citiesWether.find(
       (cityWether) => cityWether.city.name === city.name,
     );
   }
 
-  async init() {
+  public async init() {
     if (this.isEmptyCities()) {
       await this.loadFirstly();
     }

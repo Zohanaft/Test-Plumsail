@@ -1,13 +1,45 @@
 .widget {
   &-wrapper {
-    max-width: 320px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 320px;
+
+    & > * {
+      padding-top: 10px;
+    }
+  }
+
+  &-max-width {
+    width: 320px;
   }
 
   &-temperature {
     font-size: 22px;
   }
+}
+
+.pl-4 {
+  padding-left: 4px;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}
+
+.pr-10 {
+  padding-right: 10px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.col-6 {
+  width: 50%;
 }

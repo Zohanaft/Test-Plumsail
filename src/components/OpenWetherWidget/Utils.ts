@@ -29,6 +29,13 @@ export const degToCompass = (deg: number): string => {
   return directions[Number(degreese) % 16];
 };
 
+export const getDewPoint = (temp: number, humidity: number): number => {
+  const celsiyTemp = kelvinToCelsiy(temp);
+  return Math.ceil(
+    (17.27 * celsiyTemp) / ((237.7 + celsiyTemp) / Math.log(humidity)),
+  );
+};
+
 export interface Callback<T1, T2 = void> {
   (param: T1): T2;
 }
