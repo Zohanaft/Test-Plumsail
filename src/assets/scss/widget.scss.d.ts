@@ -7,6 +7,7 @@ interface CssExports {
   'pr-10': string;
   'row': string;
   'widget-max-width': string;
+  'widget-settings': string;
   'widget-temperature': string;
   'widget-wrapper': string;
 }

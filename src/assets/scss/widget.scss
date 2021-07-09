@@ -20,6 +20,28 @@
   &-temperature {
     font-size: 22px;
   }
+
+  &-settings {
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: inherit;
+
+    &:active {
+      background-color: transparent;
+    }
+
+    &:hover {
+      background-color: transparent;
+      color: black;
+    }
+
+    &:hover,
+    &:active {
+      outline: none;
+    }
+  }
 }
 
 .pl-4 {

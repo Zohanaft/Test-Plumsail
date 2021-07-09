@@ -3,9 +3,9 @@ import { DefaultCity } from './CurrentLocation';
 
 export class ApiOpenWether {
   private url: string;
-  private cities: Array<City> = [];
-  private citiesWether: Array<CityWether> = [];
   private apiKey: string;
+  public cities: Array<City> = [];
+  public citiesWether: Array<CityWether> = [];
 
   constructor() {
     this.url = 'https://api.openweathermap.org/data/2.5/forecast';
@@ -37,17 +37,18 @@ export class ApiOpenWether {
 
   public appendCity(city: City) {
     const indexOfCity = this.indexOfCity(city);
-    if (!!(indexOfCity + 1)) return this.cities.splice(indexOfCity, 1, city);
+    if (!!(indexOfCity + 1)) this.cities.splice(indexOfCity, 1, city);
     else {
       this.cities.push(city);
-      this.updateStorage();
     }
+    this.updateStorage();
   }
 
   public removeCity(city: City) {
     const indexOfCity = this.indexOfCity(city);
     this.cities.splice(indexOfCity, 1);
     this.removeCityWether(city);
+    this.updateStorage();
   }
 
   public updateStorage() {
@@ -80,6 +81,7 @@ export class ApiOpenWether {
     const response: Response = await fetch(url as string);
     const cityWether: CityWether = await response.json();
     this.appendCity(cityWether.city);
+    this.citiesWether.push(cityWether);
 
     if (response.ok) return cityWether;
 
@@ -99,9 +101,7 @@ export class ApiOpenWether {
     await Promise.all(
       this.cities.map(async (city) => {
         try {
-          const response: CityWether = await this.loadCityWether(city);
-          this.citiesWether.push(response);
-          this.appendCity(response.city);
+          await this.loadCityWether(city);
         } catch (error) {
           console.error(error.message);
         }

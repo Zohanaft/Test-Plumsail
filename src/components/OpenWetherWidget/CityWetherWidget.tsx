@@ -1,6 +1,5 @@
 import React from 'react';
 import MaterialIcon from 'material-icons-react';
-import { ApiOpenWether } from './ApiOpenWether';
 import { City, CityWether, WetherObject } from './City';
 import {
   degToCompass,
@@ -13,13 +12,10 @@ import * as styles from 'src/assets/scss/widget.scss';
 import * as mainStyles from 'src/assets/scss/main.scss';
 
 export const CityWetherWidget: React.FC<{
-  city: City;
-  wetherWorker: ApiOpenWether;
+  wetherObject: CityWether;
 }> = (properties) => {
-  const city: City = properties.city;
-  const wetherWorker: ApiOpenWether = properties.wetherWorker;
-
-  const cityWether: CityWether = wetherWorker.getCityWether(city);
+  const city: City = properties.wetherObject.city;
+  const cityWether: CityWether = properties.wetherObject;
   const wetherObjectList: Array<WetherObject> = cityWether.list;
   // Вытащим таймзон оффсет
   const tz = new Date().getTimezoneOffset() * 60000;
@@ -43,9 +39,7 @@ export const CityWetherWidget: React.FC<{
           mainStyles.default['d-flex'],
           mainStyles.default['align-center'],
           styles.default['widget-temperature'],
-        ]
-          .toString()
-          .replace(/,/gm, ' ')}
+        ].join(' ')}
       >
         {
           <img
@@ -55,20 +49,16 @@ export const CityWetherWidget: React.FC<{
         }
         {kelvinToCelsiy(currentWetherObject.main.temp) + ' C°'}
       </div>
-      <div
-        className={[styles.default.row, styles.default['pl-10']]
-          .toString()
-          .replace(/,/gm, ' ')}
-      >
+      <div className={[styles.default.row, styles.default['pl-10']].join(' ')}>
         Feels like{' '}
         {kelvinToCelsiy(currentWetherObject.main.feels_like) + ' C° '}
         {currentWetherObject.weather[0].description.trimStart()}
       </div>
-      <div className={[styles.default.row].toString().replace(/,/gm, ' ')}>
+      <div className={[styles.default.row].join(' ')}>
         <div
-          className={[styles.default['col-6'], styles.default['pl-10']]
-            .toString()
-            .replace(/,/gm, ' ')}
+          className={[styles.default['col-6'], styles.default['pl-10']].join(
+            ' ',
+          )}
         >
           <div
             style={{
@@ -95,9 +85,7 @@ export const CityWetherWidget: React.FC<{
               styles.default['col-6'],
               styles.default['pl-10'],
               mainStyles.default['align-center'],
-            ]
-              .toString()
-              .replace(/,/gm, ' ')}
+            ].join(' ')}
           >
             <MaterialIcon icon="remove_circle_outline" size="small" />
           </div>
@@ -113,9 +101,7 @@ export const CityWetherWidget: React.FC<{
             styles.default['col-6'],
             styles.default['pl-10'],
             mainStyles.default['align-center'],
-          ]
-            .toString()
-            .replace(/,/gm, ' ')}
+          ].join(' ')}
         >
           <MaterialIcon icon="opacity" size="small"></MaterialIcon>
           Humidity: {currentWetherObject.main.humidity}
@@ -125,9 +111,7 @@ export const CityWetherWidget: React.FC<{
             styles.default['col-6'],
             styles.default['pl-10'],
             mainStyles.default['align-center'],
-          ]
-            .toString()
-            .replace(/,/gm, ' ')}
+          ].join(' ')}
         >
           <MaterialIcon icon="water_drop" size="small"></MaterialIcon>
           Dew point:{' '}
@@ -144,9 +128,7 @@ export const CityWetherWidget: React.FC<{
           styles.default.row,
           styles.default['pl-10'],
           mainStyles.default['align-center'],
-        ]
-          .toString()
-          .replace(/,/gm, ' ')}
+        ].join(' ')}
       >
         <MaterialIcon icon="visibility" size="small"></MaterialIcon>
         Visibility: {Math.ceil(currentWetherObject.visibility / 100) / 10}km

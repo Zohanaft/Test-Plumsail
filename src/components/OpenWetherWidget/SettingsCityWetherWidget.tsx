@@ -1,35 +1,25 @@
-import React from 'react';
 import MaterialIcon from 'material-icons-react';
 import { City } from './City';
-import { ApiOpenWether } from './ApiOpenWether';
 
 import * as styles from 'src/assets/scss/widget.scss';
 import * as mainStyles from 'src/assets/scss/main.scss';
+import React from 'react';
 
-export const SettingsCityWetherWidget: React.FC<{
-  wetherWorker: ApiOpenWether;
-}> = (properties) => {
-  const wetherWorker = properties.wetherWorker;
-  const cities = wetherWorker.getCities();
+interface Properties {
+  onAppend(city: City): void;
+  cities: Array<City>;
+}
+
+export const SettingsCityWetherWidget: React.FC<Properties> = (props) => {
+  const cities: Array<City> = props.cities;
   const editCity: City = { name: '' };
 
   const updateCity = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     editCity.name = event.target.value;
   };
 
-  const appendCity = async (event: React.KeyboardEvent) => {
-    console.log(editCity);
-    if (event.key === 'Enter') {
-      console.log(editCity);
-      const city: City = await JSON.parse(JSON.stringify(Object(editCity)));
-      console.log(editCity);
-      const cityWether = await wetherWorker.loadCityWether(city);
-      if (cityWether) {
-        wetherWorker.appendCity(cityWether.city);
-      }
-      editCity.name = '';
-    }
+  const appendCity = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') props.onAppend(editCity);
   };
 
   return (
@@ -37,9 +27,7 @@ export const SettingsCityWetherWidget: React.FC<{
       className={[
         styles.default['widget-max-width'],
         styles.default['widget-wrapper'],
-      ]
-        .toString()
-        .replace(/,/gm, ' ')}
+      ].join(' ')}
     >
       <span className={mainStyles.default.absolute}>
         <MaterialIcon icon="gear"></MaterialIcon>
@@ -52,9 +40,7 @@ export const SettingsCityWetherWidget: React.FC<{
               className={[
                 mainStyles.default['d-flex'],
                 mainStyles.default['align-center'],
-              ]
-                .toString()
-                .replace(/,/gm, ' ')}
+              ].join(' ')}
             >
               <MaterialIcon icon="burger" size="small" />
               <span>{`${city.name}, ${city.country}`}</span>
