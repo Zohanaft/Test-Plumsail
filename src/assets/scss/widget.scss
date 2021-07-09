@@ -42,6 +42,11 @@
       outline: none;
     }
   }
+
+  &-remove-button {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .pl-4 {
@@ -64,4 +69,11 @@
 
 .col-6 {
   width: 50%;
+}
+
+.hidden {
+  display: none;
+}
+.show {
+  display: block;
 }

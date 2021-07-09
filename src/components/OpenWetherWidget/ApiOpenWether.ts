@@ -59,7 +59,8 @@ export class ApiOpenWether {
     const indexOfCityWether = this.citiesWether.findIndex(
       (cityWether) => cityWether.city.name === city.name,
     );
-    if (indexOfCityWether) this.citiesWether.splice(indexOfCityWether, 1);
+    if (indexOfCityWether !== -1)
+      this.citiesWether.splice(indexOfCityWether, 1);
   }
 
   async loadFirstly(): Promise<Array<City>> {

@@ -2,11 +2,14 @@
 // Please do not change this file!
 interface CssExports {
   'col-6': string;
+  'hidden': string;
   'pl-10': string;
   'pl-4': string;
   'pr-10': string;
   'row': string;
+  'show': string;
   'widget-max-width': string;
+  'widget-remove-button': string;
   'widget-settings': string;
   'widget-temperature': string;
   'widget-wrapper': string;

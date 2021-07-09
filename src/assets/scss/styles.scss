@@ -20,3 +20,16 @@ header,
 footer {
   flex: 0 0 auto;
 }
+
+button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  &:active, &:hover, &:focus {
+    background-color: transparent;
+    outline: none;
+    border: none;
+  }
+}

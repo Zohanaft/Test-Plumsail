@@ -4,14 +4,21 @@ import { City } from './City';
 import * as styles from 'src/assets/scss/widget.scss';
 import * as mainStyles from 'src/assets/scss/main.scss';
 import React from 'react';
+import { CityListItem } from './CityListItem';
 
 interface Properties {
   onAppend(city: City): void;
+  onDelete(city: City): void;
   cities: Array<City>;
+  className: string;
 }
 
-export const SettingsCityWetherWidget: React.FC<Properties> = (props) => {
-  const cities: Array<City> = props.cities;
+export const SettingsCityWetherWidget: React.FC<Properties> = ({
+  onAppend,
+  cities,
+  className,
+  onDelete,
+}) => {
   const editCity: City = { name: '' };
 
   const updateCity = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +26,11 @@ export const SettingsCityWetherWidget: React.FC<Properties> = (props) => {
   };
 
   const appendCity = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') props.onAppend(editCity);
+    if (event.key === 'Enter') onAppend(editCity);
+  };
+
+  const deleteCity = (city: City) => {
+    onDelete(city);
   };
 
   return (
@@ -27,6 +38,7 @@ export const SettingsCityWetherWidget: React.FC<Properties> = (props) => {
       className={[
         styles.default['widget-max-width'],
         styles.default['widget-wrapper'],
+        className,
       ].join(' ')}
     >
       <span className={mainStyles.default.absolute}>
@@ -34,22 +46,16 @@ export const SettingsCityWetherWidget: React.FC<Properties> = (props) => {
       </span>
       <ul>
         {cities.map((city, index) => {
-          return (
-            <li
-              key={index}
-              className={[
-                mainStyles.default['d-flex'],
-                mainStyles.default['align-center'],
-              ].join(' ')}
-            >
-              <MaterialIcon icon="burger" size="small" />
-              <span>{`${city.name}, ${city.country}`}</span>
-              <MaterialIcon icon="delete_outline" size="small" />
-            </li>
-          );
+          return <CityListItem key={index} city={city} onDelete={deleteCity} />;
         })}
       </ul>
-      <div className={styles.default['widget-max-width']}>
+      <div
+        className={[
+          styles.default['widget-max-width'],
+          styles.default['pr-10'],
+          styles.default['pl-10'],
+        ].join(' ')}
+      >
         <input type="text" onChange={updateCity} onKeyPress={appendCity} />
       </div>
     </div>
