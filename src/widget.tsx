@@ -38,16 +38,25 @@ const Widget: React.FC<Properties> = (props) => {
     ...wetherWorker.citiesWether,
   ]);
   const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [settingsLock, setSettingsLock] = useState<boolean>(true);
+  const [lockCount, setLockCount] = useState<number>(1);
 
   const lock = JSON.parse(localStorage.getItem('settings-llock'));
 
+  const lockToggle = () => {
+    setLockCount(lockCount - 1);
+    console.log(lockCount);
+    if (!lockCount) {
+      localStorage.setItem('settings-llock', JSON.stringify(false));
+    }
+  };
+
   const clickToggle = () => {
     setShowSettings(!showSettings);
-    if (!showSettings) {
-      setSettingsLock(false);
-      localStorage.setItem('settings-llock', JSON.stringify(settingsLock));
-    }
+  };
+
+  const settingsTogglersLogick = () => {
+    clickToggle();
+    lockToggle();
   };
 
   const appendCity = async (city: City) => {
@@ -74,9 +83,9 @@ const Widget: React.FC<Properties> = (props) => {
         className={[
           mainStyles.default.absolute,
           styles.default['widget-settings'],
-          `${settingsLock ? '' : styles.default.hidden}`,
+          `${lock ? '' : styles.default.hidden}`,
         ].join(' ')}
-        onClick={clickToggle}
+        onClick={settingsTogglersLogick}
       >
         <MaterialIcon icon="settings" color="gray" size="small" />
       </button>
